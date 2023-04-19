@@ -11,4 +11,6 @@ public interface MovieService {
     public Movie acceptMovieDetails(Movie movie)throws CinemaDetailsNotFoundException, ScreenNotFoundException;
     public List<Movie> getAllMovies();
     public Movie getMovieDetailsByMovieTitle(String movieTitle) throws MovieDetailsNotFoundException;
+    public Movie updateMovieDetails(String movieTitle, Movie movie) throws MovieDetailsNotFoundException, ScreenNotFoundException,CinemaDetailsNotFoundException;
+    public boolean deleteMovie(String movieTitle) throws  MovieDetailsNotFoundException;
 }

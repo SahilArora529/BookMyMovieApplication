@@ -42,4 +42,21 @@ public class BookingController {
         Booking savedBooking = bookingService.addTicketBooking(booking);
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
+
+    // To update the booking details
+    @PutMapping(value = "/bookings/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateBookingDetails(@PathVariable(name = "id") int id, @RequestBody Booking booking, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, ScreenNotFoundException, MovieDetailsNotFoundException, BookingFailedException {
+        logger.debug("Update booking details :" + id, booking);
+        if (token == null)
+            throw new APIException("Please add proper authentication");
+        Booking updatedBooking = bookingService.updateBookingDetails(id, booking);
+        return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
+    }
+
+    // To delete booking
+    @DeleteMapping("/bookings/{id}")
+    public ResponseEntity<String> removeBookingDetails(@PathVariable("id") int id) throws BookingFailedException{
+        bookingService.deleteBooking(id);
+        return new ResponseEntity<>("Booking details successfully removed ",HttpStatus.OK);
+    }
 }

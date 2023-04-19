@@ -1,9 +1,7 @@
 package com.project.bookmymovie.services;
 
-import com.project.bookmymovie.exceptions.APIException;
-import com.project.bookmymovie.exceptions.CinemaDetailsNotFoundException;
+
 import com.project.bookmymovie.exceptions.ScreenNameExistsException;
-import com.project.bookmymovie.models.Movie;
 import com.project.bookmymovie.models.Screen;
 import com.project.bookmymovie.exceptions.ScreenNotFoundException;
 
@@ -13,4 +11,6 @@ public interface ScreenService {
     public Screen addScreenDetails(Screen screen) throws ScreenNameExistsException;
     public List<Screen> getAllScreens();
     public Screen getScreenDetailsByName(String screenName) throws ScreenNotFoundException;
+    public Screen updateScreenDetails(String screenName,Screen screen) throws ScreenNotFoundException;
+    public boolean deleteScreen(String screenName) throws  ScreenNotFoundException;
 }

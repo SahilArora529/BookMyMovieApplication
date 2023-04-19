@@ -13,4 +13,8 @@ public interface CinemaService {
     public List<Cinema> getCinemaDetailsByType(String cinemaType) throws CinemaDetailsNotFoundException;
 
     public Cinema getCinemaDetailsByName(String cinemaName) throws CinemaDetailsNotFoundException;
+
+    public Cinema updateCinemaDetails(String cinemaName, Cinema cinema) throws CinemaDetailsNotFoundException;
+
+    public boolean deleteCinema(String cinemaType ,String cinemaName) throws  CinemaDetailsNotFoundException;
 }

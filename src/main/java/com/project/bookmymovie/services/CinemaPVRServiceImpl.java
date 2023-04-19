@@ -1,9 +1,6 @@
 package com.project.bookmymovie.services;
 
 import com.project.bookmymovie.exceptions.CinemaNameExistsException;
-import com.project.bookmymovie.exceptions.InternalErrorException;
-import com.project.bookmymovie.exceptions.ScreenNotFoundException;
-import com.project.bookmymovie.models.Screen;
 import com.project.bookmymovie.repositories.CinemaDao;
 import com.project.bookmymovie.models.Cinema;
 import com.project.bookmymovie.exceptions.CinemaDetailsNotFoundException;
@@ -12,9 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -23,9 +18,9 @@ public class CinemaPVRServiceImpl implements CinemaService {
     @Autowired
     CinemaDao cinemaDao;
 
-    @Transactional(rollbackFor = InternalErrorException.class)
+    @Transactional(rollbackFor = CinemaNameExistsException.class)
     @Override
-    public Cinema addCinemaDetails(Cinema cinema) throws CinemaNameExistsException, CinemaDetailsNotFoundException, ScreenNotFoundException {
+    public Cinema addCinemaDetails(Cinema cinema) throws CinemaNameExistsException, CinemaDetailsNotFoundException {
         //TODO to add the cinema for PVR
         if (cinemaDao.findByCinemaName(cinema.getCinemaName()).isPresent()) {
             throw new CinemaNameExistsException("This CinemaName is already taken.");
@@ -33,6 +28,7 @@ public class CinemaPVRServiceImpl implements CinemaService {
         return cinemaDao.save(cinema);
     }
 
+    @Transactional(readOnly = true)
     public Cinema getCinemaDetailsByName(String cinemaName) throws CinemaDetailsNotFoundException {
         //TODO to find the cinema with cinema Name
         return cinemaDao.findByCinemaName(cinemaName)
@@ -41,8 +37,42 @@ public class CinemaPVRServiceImpl implements CinemaService {
                 );
     }
 
+    @Transactional(readOnly = true)
     public List<Cinema> getCinemaDetailsByType(String cinemaType) throws CinemaDetailsNotFoundException {
         //TODO to find the cinema with cinema type
         return cinemaDao.findByCinemaType(cinemaType);
+    }
+
+    @Transactional(rollbackFor = CinemaDetailsNotFoundException.class)
+    @Override
+    public Cinema updateCinemaDetails(String  cinemaName, Cinema cinema) throws CinemaDetailsNotFoundException {
+        Cinema cinema1= getCinemaDetailsByName(cinemaName);
+        if (isNotNullOrZero(cinema1.getCinemaName())) {
+            cinema1.setCinemaName(cinema.getCinemaName());
+        }
+        if (isNotNullOrZero(cinema1.getCinemaType())) {
+            cinema1.setCinemaType(cinema.getCinemaType());
+        }
+        return cinemaDao.save(cinema1);
+    }
+
+    @Transactional(rollbackFor = CinemaDetailsNotFoundException.class)
+    @Override
+    public boolean deleteCinema(String cinemaType,String cinemaName) throws  CinemaDetailsNotFoundException {
+        List<Cinema> cinema = getCinemaDetailsByType(cinemaType);
+        Cinema cinema1 = getCinemaDetailsByName(cinemaName);
+        for (Cinema str: cinema)
+        {
+            if(str.getCinemaName().equals(cinema1.getCinemaName()))
+            {
+                cinemaDao.delete(cinema1);
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isNotNullOrZero(Object obj) {
+        return obj != null;
     }
 }

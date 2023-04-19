@@ -1,13 +1,11 @@
 package com.project.bookmymovie.services;
 
-import com.project.bookmymovie.exceptions.CinemaDetailsNotFoundException;
-import com.project.bookmymovie.exceptions.ScreenNotFoundException;
+import com.project.bookmymovie.exceptions.*;
 import com.project.bookmymovie.models.*;
 import com.project.bookmymovie.repositories.BookingDao;
-import com.project.bookmymovie.exceptions.MovieDetailsNotFoundException;
-import com.project.bookmymovie.exceptions.UserDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +30,7 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     BookingDao bookingDao;
 
+    @Transactional(rollbackFor = {UserDetailsNotFoundException.class,MovieDetailsNotFoundException.class,CinemaDetailsNotFoundException.class,ScreenNotFoundException.class})
     @Override
     public Booking addTicketBooking(Booking booking) throws UserDetailsNotFoundException, MovieDetailsNotFoundException, CinemaDetailsNotFoundException, ScreenNotFoundException {
         //TODO to add the booking with movie, cinema, screen
@@ -56,10 +55,51 @@ public class BookingServiceImpl implements BookingService {
         return booking;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Booking> getAllBookingDetails() {
         // TODO to get all bookings
         return bookingDao.findAllOrderedDescending();
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Booking getBookingDetails(int id) throws BookingFailedException {
+        return bookingDao.findById(id)
+                .orElseThrow(
+                        () -> new BookingFailedException("Booking not found for id: " + id)
+                );
+    }
+
+    @Transactional(rollbackFor ={ MovieDetailsNotFoundException.class,BookingFailedException.class})
+    @Override
+    public Booking updateBookingDetails(int id,Booking booking) throws  BookingFailedException {
+        Booking savedBooking= getBookingDetails(id);
+
+        if (isNotNullOrZero(savedBooking.getMovie().getMovieTitle())) {
+            savedBooking.setMovie(booking.getMovie());
+        }
+        if (isNotNullOrZero(savedBooking.getUser().getUsername())) {
+            savedBooking.setUser(booking.getUser());
+        }
+        if (isNotNullOrZero(booking.getBookingDate())) {
+            savedBooking.setBookingDate(booking.getBookingDate());
+        }
+        savedBooking.setNoOfSeats(booking.getNoOfSeats());
+        return bookingDao.save(savedBooking);
+    }
+
+    @Transactional(rollbackFor = BookingFailedException.class)
+    @Override
+    public boolean deleteBooking(int id) throws BookingFailedException {
+        Booking booking = getBookingDetails(id);
+        bookingDao.delete(booking);
+        return true;
+    }
+
+    private boolean isNotNullOrZero(Object obj) {
+        return obj != null;
+    }
+
 }
 

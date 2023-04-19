@@ -59,5 +59,33 @@ public class CinemaController {
         return new ResponseEntity<>(cinema, HttpStatus.CREATED);
     }
 
+    // To update the cinema details
+    @PutMapping(value = "/cinema/{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateScreenDetails(@PathVariable(name = "name") String cinemaName, @RequestBody Cinema cinema, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, CinemaDetailsNotFoundException {
+        logger.debug("Update cinema details :" + cinemaName, cinema);
+        if (token == null)
+            throw new APIException("Please add proper authentication");
+        if (cinema.getCinemaType().equalsIgnoreCase("PVR")) {
+            cinema = cinemaPVRService.updateCinemaDetails(cinemaName, cinema);
+        } else if (cinema.getCinemaType().equalsIgnoreCase("INOX")) {
+            cinema = cinemaINOXService.updateCinemaDetails(cinemaName, cinema);
+        } else {
+            throw new APIException("Cinema Type must be either INOX or PVR");
+        }
+        return new ResponseEntity<>(cinema, HttpStatus.CREATED);
+    }
+
+    // To delete the cinema details
+    @DeleteMapping("/cinema/{type}/{name}")
+    public ResponseEntity<String> removeScreenDetails(@PathVariable("type") String cinemaType, @PathVariable("name") String cinemaName) throws CinemaDetailsNotFoundException {
+        if (cinemaType.equalsIgnoreCase("PVR")) {
+            cinemaPVRService.deleteCinema(cinemaType, cinemaName);
+        }
+        if (cinemaType.equalsIgnoreCase("INOX")) {
+            cinemaPVRService.deleteCinema(cinemaType, cinemaName);
+        }
+        return new ResponseEntity<>("Cinema details successfully removed ", HttpStatus.OK);
+    }
+
 
 }

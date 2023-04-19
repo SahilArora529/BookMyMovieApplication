@@ -1,6 +1,5 @@
 package com.project.bookmymovie.Controllers;
 
-import com.project.bookmymovie.exceptions.CinemaDetailsNotFoundException;
 import com.project.bookmymovie.exceptions.ScreenNameExistsException;
 import com.project.bookmymovie.exceptions.ScreenNotFoundException;
 import com.project.bookmymovie.models.Screen;
@@ -41,5 +40,22 @@ public class ScreenController {
         List<Screen> screenList = screenService.getAllScreens();
         logger.debug("Returning all movies", screenList);
         return new ResponseEntity<>(screenList, HttpStatus.OK);
+    }
+
+    // To update the screen details
+    @PutMapping(value = "/screen/{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateScreenDetails(@PathVariable(name = "name") String screenName, @RequestBody Screen screen, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, ScreenNotFoundException {
+        logger.debug("Update movie details : movie id :" + screenName, screen);
+        if (token == null)
+            throw new APIException("Please add proper authentication");
+        Screen updatedScreen = screenService.updateScreenDetails(screenName, screen);
+        return new ResponseEntity<>(updatedScreen, HttpStatus.OK);
+    }
+
+    // To delete the screen details
+    @DeleteMapping("/screen/{name}")
+    public ResponseEntity<String> removeScreenDetails(@PathVariable("name") String screenName) throws ScreenNotFoundException {
+        screenService.deleteScreen(screenName);
+        return new ResponseEntity<>("Screen details successfully removed ", HttpStatus.OK);
     }
 }

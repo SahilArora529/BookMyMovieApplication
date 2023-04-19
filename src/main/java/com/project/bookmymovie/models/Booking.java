@@ -1,11 +1,8 @@
 package com.project.bookmymovie.models;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name="Booking")
 @NamedQuery(name = "Booking.findAllOrderedDescending",
@@ -31,4 +28,55 @@ public class Booking {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
+
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public LocalDateTime getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDateTime bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public int getNoOfSeats() {
+        return noOfSeats;
+    }
+
+    public void setNoOfSeats(int noOfSeats) {
+        this.noOfSeats = noOfSeats;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "ticketId=" + ticketId +
+                ", bookingDate=" + bookingDate +
+                ", noOfSeats=" + noOfSeats +
+                ", user=" + user +
+                ", movie=" + movie +
+                '}';
+    }
 }

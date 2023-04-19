@@ -1,11 +1,8 @@
 package com.project.bookmymovie.models;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "Movie")
 @NamedQuery(name = "Movie.findAllOrderedDescending",
@@ -33,5 +30,65 @@ public class Movie {
     @ManyToOne
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
+
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public LocalDateTime getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDateTime releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Screen getScreen() {
+        return screen;
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "movieId=" + movieId +
+                ", movieTitle='" + movieTitle + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", status='" + status + '\'' +
+                ", screen=" + screen +
+                ", cinema=" + cinema +
+                '}';
+    }
 
 }

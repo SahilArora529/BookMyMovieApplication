@@ -1,8 +1,6 @@
 package com.project.bookmymovie;
 
-
 import com.project.bookmymovie.services.InitService;
-import org.modelmapper.ModelMapper;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +24,6 @@ public class BookmymovieApplication {
             initService.init();
         };
     }
-
 }
 
 

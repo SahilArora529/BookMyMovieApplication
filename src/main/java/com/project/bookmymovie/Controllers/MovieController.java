@@ -1,5 +1,6 @@
 package com.project.bookmymovie.Controllers;
 
+import com.project.bookmymovie.exceptions.MovieDetailsNotFoundException;
 import com.project.bookmymovie.models.Movie;
 import com.project.bookmymovie.exceptions.APIException;
 import com.project.bookmymovie.exceptions.ScreenNotFoundException;
@@ -31,7 +32,7 @@ public class MovieController {
         if (token == null)
             throw new APIException("Please add proper authentication");
         Movie savedMovie = movieService.acceptMovieDetails(movie);
-        return  new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
     }
 
     // To get view all movies and their Screen details available for a Cinema
@@ -40,6 +41,23 @@ public class MovieController {
         List<Movie> movieList = movieService.getAllMovies();
         logger.debug("Returning all movies", movieList);
         return new ResponseEntity<>(movieList, HttpStatus.OK);
+    }
+
+    // To update the movie details
+    @PutMapping(value = "/movie/{movieTitle}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateMovieDetails(@PathVariable(name = "movieTitle") String movieTitle, @RequestBody Movie movie, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, ScreenNotFoundException, MovieDetailsNotFoundException,CinemaDetailsNotFoundException {
+        logger.debug("Update movie details : " + movie);
+        if (token == null)
+            throw new APIException("Please add proper authentication");
+        Movie updatedMovie = movieService.updateMovieDetails(movieTitle, movie);
+        return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
+    }
+
+    // To delete the movie details
+    @DeleteMapping("/movie/{movieTitle}")
+    public ResponseEntity<String> removeScreenDetails(@PathVariable("movieTitle") String movieTitle) throws MovieDetailsNotFoundException {
+        movieService.deleteMovie(movieTitle);
+        return new ResponseEntity<>("Movie details successfully removed ", HttpStatus.OK);
     }
 
 

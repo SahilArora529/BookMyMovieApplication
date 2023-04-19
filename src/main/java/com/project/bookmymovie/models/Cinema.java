@@ -5,12 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @Table(name = "Cinema")
 @Component("savedCinema")
@@ -26,5 +24,40 @@ public class Cinema {
 
     @Column(name = "cinema_type", length = 20, nullable = false)
     private String cinemaType;
+
+    public int getCinemaId() {
+        return cinemaId;
+    }
+
+    public void setCinemaId(int cinemaId) {
+        this.cinemaId = cinemaId;
+    }
+
+    public String getCinemaName() {
+        return cinemaName;
+    }
+
+    public void setCinemaName(String cinemaName) {
+        this.cinemaName = cinemaName;
+    }
+
+    public String getCinemaType() {
+        return cinemaType;
+    }
+
+    public void setCinemaType(String cinemaType) {
+        this.cinemaType = cinemaType;
+    }
+
+    @Override
+    public String toString() {
+        return "Cinema{" +
+                "cinemaId=" + cinemaId +
+                ", cinemaName='" + cinemaName + '\'' +
+                ", cinemaType='" + cinemaType + '\'' +
+                '}';
+    }
+
+
 
 }

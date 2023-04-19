@@ -27,7 +27,7 @@ public class UserController {
 
     // User signup
     @PostMapping(value = "/signup",consumes= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity signup(@RequestBody User user)throws APIException, UserNameExistsException
+    public ResponseEntity signup(@RequestBody User user)throws  UserNameExistsException
     {
         User savedUser = userService.addUserDetails(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -53,4 +53,24 @@ public class UserController {
         logger.debug("Returning all users" , userList);
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
+
+    // To delete users
+    @DeleteMapping("/users/{name}")
+    public ResponseEntity<String> removeUserDetails(@PathVariable(name= "name") String name) throws  UserDetailsNotFoundException {
+        userService.deleteUser(name);
+        return new ResponseEntity<>("User details successfully removed ",HttpStatus.OK);
+    }
+
+
+
+    // To update the user details
+    @PutMapping(value = "/users/{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateUserDetails(@PathVariable(name = "name") String userName, @RequestBody  User user, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, UserDetailsNotFoundException {
+        logger.debug("Update movie details :" + userName, user);
+        if (token == null)
+            throw new APIException("Please add proper authentication");
+        User updatedUser = userService.updateUserDetails(userName, user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
 }
