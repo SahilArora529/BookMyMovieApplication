@@ -1,13 +1,15 @@
 package com.project.bookmymovie.models;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name="Booking")
 @NamedQuery(name = "Booking.findAllOrderedDescending",
         query = "SELECT c FROM Booking c ORDER BY c.ticketId DESC")
-public class Booking {
+public class Booking implements Comparable<Booking> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +30,15 @@ public class Booking {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
+    public  Booking()
+    {
+    }
+
+    public Booking(int ticketId, LocalDateTime bookingDate, int noOfSeats) {
+        this.ticketId = ticketId;
+        this.bookingDate = bookingDate;
+        this.noOfSeats = noOfSeats;
+    }
 
     public int getTicketId() {
         return ticketId;
@@ -70,6 +81,18 @@ public class Booking {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return ticketId == booking.ticketId && noOfSeats == booking.noOfSeats && bookingDate.equals(booking.bookingDate) && user.equals(booking.user) && movie.equals(booking.movie);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ticketId, bookingDate, noOfSeats, user, movie);
+    }
+    @Override
     public String toString() {
         return "Booking{" +
                 "ticketId=" + ticketId +
@@ -79,4 +102,15 @@ public class Booking {
                 ", movie=" + movie +
                 '}';
     }
-}
+
+    @Override
+    public int compareTo(Booking o) {
+        if (this.ticketId < o.ticketId) {
+            return -1;
+        } else if (this.ticketId > o.ticketId) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    }

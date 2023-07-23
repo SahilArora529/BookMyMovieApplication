@@ -20,7 +20,7 @@ public class ScreenServiceImpl implements ScreenService {
     @Override
     public Screen addScreenDetails(Screen screen) throws ScreenNameExistsException {
         if (screendao.findByScreenName(screen.getScreenName()).isPresent()) {
-            throw new ScreenNameExistsException("This ScreenName is already taken.");
+            throw new ScreenNameExistsException("This ScreenName is already taken");
         }
         return screendao.save(screen);
     }
@@ -40,7 +40,7 @@ public class ScreenServiceImpl implements ScreenService {
         return screendao.findAllOrderedDescending();
     }
 
-    @Transactional(rollbackFor = ScreenNameExistsException.class)
+    @Transactional(rollbackFor = ScreenNotFoundException.class)
     @Override
     public  Screen updateScreenDetails(String  screenName, Screen screen) throws ScreenNotFoundException{
     Screen screen1= getScreenDetailsByName(screenName);
@@ -50,7 +50,7 @@ public class ScreenServiceImpl implements ScreenService {
         return screendao.save(screen1);
     }
 
-    @Transactional(rollbackFor = ScreenNameExistsException.class)
+    @Transactional(rollbackFor = ScreenNotFoundException.class)
     @Override
     public boolean deleteScreen(String screenName) throws  ScreenNotFoundException {
         Screen screen = getScreenDetailsByName(screenName);

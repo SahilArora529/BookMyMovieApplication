@@ -61,7 +61,7 @@ public class CinemaController {
 
     // To update the cinema details
     @PutMapping(value = "/cinema/{name}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateScreenDetails(@PathVariable(name = "name") String cinemaName, @RequestBody Cinema cinema, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, CinemaDetailsNotFoundException {
+    public ResponseEntity updateCinemaDetails(@PathVariable(name = "name") String cinemaName, @RequestBody Cinema cinema, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, CinemaDetailsNotFoundException {
         logger.debug("Update cinema details :" + cinemaName, cinema);
         if (token == null)
             throw new APIException("Please add proper authentication");
@@ -77,7 +77,7 @@ public class CinemaController {
 
     // To delete the cinema details
     @DeleteMapping("/cinema/{type}/{name}")
-    public ResponseEntity<String> removeScreenDetails(@PathVariable("type") String cinemaType, @PathVariable("name") String cinemaName) throws CinemaDetailsNotFoundException {
+    public ResponseEntity<String> removeCinemaDetails(@PathVariable("type") String cinemaType, @PathVariable("name") String cinemaName) throws CinemaDetailsNotFoundException {
         if (cinemaType.equalsIgnoreCase("PVR")) {
             cinemaPVRService.deleteCinema(cinemaType, cinemaName);
         }

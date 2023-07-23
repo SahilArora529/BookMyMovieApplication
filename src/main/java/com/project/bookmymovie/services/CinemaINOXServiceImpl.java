@@ -18,7 +18,7 @@ public class CinemaINOXServiceImpl implements CinemaService {
     @Autowired
     CinemaDao cinemaDao;
 
-    @Transactional(rollbackFor = CinemaNameExistsException.class)
+    @Transactional(rollbackFor = {CinemaNameExistsException.class, CinemaDetailsNotFoundException.class})
     @Override
     public Cinema addCinemaDetails(Cinema cinema) throws CinemaNameExistsException, CinemaDetailsNotFoundException {
         //TODO to add the cinema for INOX

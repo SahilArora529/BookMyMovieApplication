@@ -73,7 +73,7 @@ public class MovieServiceImpl implements MovieService {
                 );
     }
 
-    @Transactional(rollbackFor = MovieDetailsNotFoundException.class)
+    @Transactional(rollbackFor = {MovieDetailsNotFoundException.class, ScreenNotFoundException.class, CinemaDetailsNotFoundException.class})
     @Override
     public Movie updateMovieDetails(String movieTitle, Movie movie) throws MovieDetailsNotFoundException, ScreenNotFoundException, CinemaDetailsNotFoundException {
         String cinemaType = movie.getCinema().getCinemaType();

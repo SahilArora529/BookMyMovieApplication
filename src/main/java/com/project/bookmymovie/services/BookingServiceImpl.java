@@ -71,7 +71,7 @@ public class BookingServiceImpl implements BookingService {
                 );
     }
 
-    @Transactional(rollbackFor ={ MovieDetailsNotFoundException.class,BookingFailedException.class})
+    @Transactional(rollbackFor =BookingFailedException.class)
     @Override
     public Booking updateBookingDetails(int id,Booking booking) throws  BookingFailedException {
         Booking savedBooking= getBookingDetails(id);

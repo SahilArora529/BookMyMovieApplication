@@ -1,6 +1,7 @@
 package com.project.bookmymovie.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -22,6 +23,17 @@ public class User {
 
     @Column(length = 20, nullable = false)
     private String password;
+
+    public User() {
+    }
+
+    public User(int userId, String firstName, String lastName, String username, String password) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
 
     public int getUserId() {
         return userId;
@@ -61,6 +73,19 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId && firstName.equals(user.firstName) && lastName.equals(user.lastName) && username.equals(user.username) && password.equals(user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, firstName, lastName, username, password);
     }
 
     @Override

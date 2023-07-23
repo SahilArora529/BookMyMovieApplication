@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Cinema")
@@ -24,6 +25,17 @@ public class Cinema {
 
     @Column(name = "cinema_type", length = 20, nullable = false)
     private String cinemaType;
+
+    public Cinema()
+    {
+
+    }
+
+    public Cinema(int cinemaId, String cinemaName, String cinemaType) {
+        this.cinemaId = cinemaId;
+        this.cinemaName = cinemaName;
+        this.cinemaType = cinemaType;
+    }
 
     public int getCinemaId() {
         return cinemaId;
@@ -47,6 +59,19 @@ public class Cinema {
 
     public void setCinemaType(String cinemaType) {
         this.cinemaType = cinemaType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cinema cinema = (Cinema) o;
+        return cinemaId == cinema.cinemaId && cinemaName.equals(cinema.cinemaName) && cinemaType.equals(cinema.cinemaType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cinemaId, cinemaName, cinemaType);
     }
 
     @Override

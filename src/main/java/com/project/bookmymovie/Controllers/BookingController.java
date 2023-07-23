@@ -45,7 +45,7 @@ public class BookingController {
 
     // To update the booking details
     @PutMapping(value = "/bookings/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateBookingDetails(@PathVariable(name = "id") int id, @RequestBody Booking booking, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, ScreenNotFoundException, MovieDetailsNotFoundException, BookingFailedException {
+    public ResponseEntity updateBookingDetails(@PathVariable(name = "id") int id, @RequestBody Booking booking, @RequestHeader(value = "ACCESS-TOKEN") String token) throws APIException, MovieDetailsNotFoundException, BookingFailedException {
         logger.debug("Update booking details :" + id, booking);
         if (token == null)
             throw new APIException("Please add proper authentication");

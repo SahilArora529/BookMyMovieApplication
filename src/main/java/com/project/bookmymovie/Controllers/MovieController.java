@@ -55,10 +55,9 @@ public class MovieController {
 
     // To delete the movie details
     @DeleteMapping("/movie/{movieTitle}")
-    public ResponseEntity<String> removeScreenDetails(@PathVariable("movieTitle") String movieTitle) throws MovieDetailsNotFoundException {
+    public ResponseEntity<String> removeMovieDetails(@PathVariable("movieTitle") String movieTitle) throws MovieDetailsNotFoundException {
         movieService.deleteMovie(movieTitle);
         return new ResponseEntity<>("Movie details successfully removed ", HttpStatus.OK);
     }
-
 
 }

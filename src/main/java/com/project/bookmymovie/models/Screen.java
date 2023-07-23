@@ -3,6 +3,7 @@ package com.project.bookmymovie.models;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "Screen.findAllOrderedDescending",
@@ -18,6 +19,14 @@ public class Screen {
     @Column(name = "screen_name", nullable = false)
     private String screenName;
 
+    public Screen() {
+    }
+
+    public Screen(int screenId, String screenName) {
+        this.screenId = screenId;
+        this.screenName = screenName;
+    }
+
     public int getScreenId() {
         return screenId;
     }
@@ -32,6 +41,19 @@ public class Screen {
 
     public void setScreenName(String screenName) {
         this.screenName = screenName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Screen screen = (Screen) o;
+        return screenId == screen.screenId && screenName.equals(screen.screenName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(screenId, screenName);
     }
 
     @Override

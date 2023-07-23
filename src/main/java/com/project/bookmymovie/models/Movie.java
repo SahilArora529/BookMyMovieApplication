@@ -1,7 +1,18 @@
 package com.project.bookmymovie.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Movie")
@@ -30,6 +41,29 @@ public class Movie {
     @ManyToOne
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
+
+    public Movie() {
+    }
+
+    public Movie(int movieId, String movieTitle, LocalDateTime releaseDate, String status) {
+        this.movieId = movieId;
+        this.movieTitle = movieTitle;
+        this.releaseDate = releaseDate;
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return movieId == movie.movieId && movieTitle.equals(movie.movieTitle) && releaseDate.equals(movie.releaseDate) && status.equals(movie.status) && screen.equals(movie.screen) && cinema.equals(movie.cinema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieId, movieTitle, releaseDate, status, screen, cinema);
+    }
 
     public int getMovieId() {
         return movieId;

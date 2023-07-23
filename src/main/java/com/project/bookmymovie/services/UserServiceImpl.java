@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public User getUserDetailsByUsername(String username) throws UserDetailsNotFoundException {
         return userDao.findByUsername(username)
                 .orElseThrow(
-                        () -> new UserDetailsNotFoundException("User not found with username: " + username)
+                       () -> new UserDetailsNotFoundException("User not found with username: " + username)
                 );
     }
 
