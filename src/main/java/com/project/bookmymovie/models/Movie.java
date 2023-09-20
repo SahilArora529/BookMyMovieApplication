@@ -38,7 +38,7 @@ public class Movie {
     @JoinColumn(name = "screen_id")
     private Screen screen;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
 

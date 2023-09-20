@@ -22,11 +22,11 @@ public class Booking implements Comparable<Booking> {
     @Column( nullable = false)
     private int noOfSeats;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
